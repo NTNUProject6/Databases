@@ -1,4 +1,4 @@
-package cabiNet;
+package no.ntnu.cabinet;
 import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;

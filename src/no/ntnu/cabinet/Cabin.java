@@ -1,4 +1,4 @@
-package cabiNet;
+package no.ntnu.cabinet;
 
 public class Cabin {
 	
