@@ -6,19 +6,20 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import com.mysql.jdbc.Connection;
-import com.mysql.jdbc.Statement;
-
 public class Database {
 	
 	private static java.sql.Connection connection;
 	private static java.sql.Statement statement;
 	
-	private static String url = "jdbc:mysql://mysql.stud.ntnu.no/nuttawua_cabinInfo",
-					username = "nuttawua_cabinet", password = "carbinet";
+	private static String url = "jdbc:mysql://cabinet-ntnu.no-ip.org/cabinet",
+					username = "cabinet", password = "CabiNet";
 			
 	public Database(){
-		
+		try {
+			Class.forName("com.mysql.jdbc.Driver").newInstance();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		try {
 			connection = DriverManager.getConnection(url, username, password);
 			System.out.print("success");
@@ -50,11 +51,11 @@ public class Database {
 		}
 	}
 	
-	public ArrayList<Booking> getBookingFromCabin1(){
+	public ArrayList<Booking> getBookingFromCabin(int cabin_id){
 		ArrayList<Booking> ab = new ArrayList<Booking>();
 		try{
 			statement = connection.createStatement();
-			String sql = "select * from booking";
+			String sql = "select * from bookingForCabin" + cabin_id;
 			ResultSet rs = statement.executeQuery(sql);
 			while(rs.next()){
 				Booking b = new Booking();
@@ -77,7 +78,7 @@ public class Database {
 	public static void main(String[] args){
 		Database db = new Database();
 		ArrayList<Booking> ab = new ArrayList<Booking>();
-		ab = db.getBookingFromCabin1();
+		ab = db.getBookingFromCabin(1);
 		for(Booking b : ab){
 			System.out.println("////////////////////////////////");
 			System.out.println("booking_id:	" + b.getId());
@@ -86,6 +87,6 @@ public class Database {
 			System.out.println("date_from:	" + b.getDate_From());
 			System.out.println("date_to:	" + b.getDate_To());
 		}
-		db.addBooking(ab.get(0));
+
 	}
 }
