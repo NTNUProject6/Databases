@@ -29,17 +29,16 @@ public class Database {
 		}
 	}
 	
-	public void addBooking(Booking b){
+	public void addBooking(int cabin_id, Booking booking){
 		try{
 			statement = connection.createStatement();
-			String query = "insert into booking (booking_id, user_id, cabin_id, date_from, date_to)" 
-							+ " values (?, ?, ?, ?, ?)";
+			String query = "insert into bookingForCabin"+cabin_id+" (user_id, cabin_id, date_from, date_to)" 
+							+ " values (?, ?, ?, ?)";
 			PreparedStatement pStatement = connection.prepareStatement(query); 
-			pStatement.setInt(1, 10);
-			pStatement.setString(2, b.getUser_id());
-			pStatement.setInt(3, b.getCabin_id());
-			pStatement.setDate(4, b.getDate_From());
-			pStatement.setDate(5, b.getDate_To());
+			pStatement.setString(1, booking.getUser_id());
+			pStatement.setInt(2, booking.getCabin_id());
+			pStatement.setDate(3, booking.getDate_From());
+			pStatement.setDate(4, booking.getDate_To());
 			
 			pStatement.execute();
 			
@@ -51,7 +50,7 @@ public class Database {
 		}
 	}
 	
-	public ArrayList<Booking> getBookingFromCabin(int cabin_id){
+	public ArrayList<Booking> getBooking(int cabin_id){
 		ArrayList<Booking> ab = new ArrayList<Booking>();
 		try{
 			statement = connection.createStatement();
@@ -77,8 +76,15 @@ public class Database {
 	
 	public static void main(String[] args){
 		Database db = new Database();
+		Booking booking1 = new Booking();
+		booking1.setUser_id("Hello mtfk");
+		booking1.setCabin_id(1);
+		booking1.setDate_From(new Date(2014,11,1));
+		booking1.setDate_To(new Date(2014,11,7));
+		db.addBooking(1, booking1);
+		
 		ArrayList<Booking> ab = new ArrayList<Booking>();
-		ab = db.getBookingFromCabin(1);
+		ab = db.getBooking(1);
 		for(Booking b : ab){
 			System.out.println("////////////////////////////////");
 			System.out.println("booking_id:	" + b.getId());
