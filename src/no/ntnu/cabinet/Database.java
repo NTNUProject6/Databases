@@ -55,7 +55,7 @@ public class Database {
 		ArrayList<Booking> ab = new ArrayList<Booking>();
 		try{
 			statement = connection.createStatement();
-			String sql = "select * from bookingForCabin" + cabin_id;
+			String sql = "select * from bookingForCabin" + cabin_id + " order by date_from asc";
 			ResultSet rs = statement.executeQuery(sql);
 			while(rs.next()){
 				Booking b = new Booking();
@@ -67,8 +67,8 @@ public class Database {
 				ab.add(b);
 			}
 			rs.close();
-//			statement.close();
-//			connection.close();
+			statement.close();
+			connection.close();
 		} catch(SQLException se){
 			se.printStackTrace();
 		}
